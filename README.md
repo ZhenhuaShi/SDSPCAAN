@@ -8,12 +8,12 @@ run [demo.m](https://github.com/ZhenhuaShi/SDSPCAAN/blob/main/demo.m) to reprodu
 
 ## Citation
 ```
-@Inproceedings{Shi2020,
-  author    = {Zhenhua Shi and Dongrui Wu and Jian Huang and Yu{-}Kai Wang and Chin{-}Teng Lin},
-  title     = {Supervised Discriminative Sparse {PCA} with Adaptive Neighbors for Dimensionality Reduction},
+@InProceedings{Shi2020,
+  author    = {Zhenhua Shi and Dongrui Wu and Jian Huang and Yu-Kai Wang and Chin-Teng Lin},
   booktitle = {Proc. Int'l Joint Conf. on Neural Networks},
+  title     = {Supervised Discriminative Sparse {PCA} with Adaptive Neighbors for Dimensionality Reduction},
   year      = {2020},
+  address   = {Glasgow, United Kingdom},
   month     = jul,
-  address   = {Glasgow, UK},
 }
 ```
