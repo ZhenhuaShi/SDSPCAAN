@@ -1,10 +1,10 @@
 # SDSPCAAN
 
-source code for MvBLS ([paper](https://ieeexplore.ieee.org/document/9120084)|[arxiv](https://arxiv.org/abs/1908.06180)|[code](https://github.com/ZhenhuaShi/MvBLS)|[blog](http://blog.sciencenet.cn/blog-3418535-1194891.html ))
+source code for SDSPCAAN ([paper](https://ieeexplore.ieee.org/document/9206927/)|[arxiv](https://arxiv.org/abs/2001.03103)|[code](https://github.com/ZhenhuaShi/SDSPCAAN))
 
-run [demo.m](https://github.com/ZhenhuaShi/SDSPCAAN/blob/main/demo.m) to reproduce the results on the goI08272012-01 dataset.
+run [demo.m](https://github.com/ZhenhuaShi/SDSPCAAN/blob/main/demo.m) to reproduce the results on the Musk1 dataset.
 
-<div align=center><img src="https://github.com/ZhenhuaShi/MvBLS/blob/main/MvBLS.JPG"/></div>
+<div align=center><img src="https://github.com/ZhenhuaShi/SDSPCAAN/blob/main/comparsion.JPG"/></div>
 
 ## Citation
 ```
