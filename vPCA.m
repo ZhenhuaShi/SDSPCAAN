@@ -1,4 +1,4 @@
-function W = PCA(X, k)
+function [Q, W] = vPCA(X, k)
 % X ∈ Rnxd, the training data matrix;
 % k, subspace dimensionality;
 
@@ -8,9 +8,11 @@ if ~exist('X', 'var')
     X=rand(50,100);
 end
 if ~exist('k', 'var')
-    k=rank(X);
+    k=2;
 end
 
-[~,~,V] = svds(X,k);
-W = V;
+[Q,S,V] = svds(X,k);
+if nargout > 1
+    W = V*S;
+end
 end

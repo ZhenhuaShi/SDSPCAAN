@@ -1,4 +1,4 @@
-function [O]=JPCDA(X, Y, k, lambda)
+function [O]=JSDSPCDA(X, Y, k, params)
 % X ∈ Rn×d, the training data matrix;
 % Y ∈ Rn×c, the corresponding one-hot coding label
 % matrix of X;
@@ -6,18 +6,21 @@ function [O]=JPCDA(X, Y, k, lambda)
 if ~exist('X', 'var')
     clear;
     rng default
-    X=rand(50,1000);
+    X=rand(50,100);
     X=X-mean(X);
 end
 if ~exist('Y', 'var')
     Y=datasample(1:3,size(X,1),'replace',true)';
 end
 if ~exist('k', 'var')
-    k=3;%rank(X);
+    k=rank(X);
 end
-if ~exist('lambda', 'var')
-    lambda=1;
+if ~exist('params', 'var')
+    params=[1 1 1];%[1 0 1];
 end
+alpha=params(1);
+beta=params(2);
+lambda=params(3);
 if ~exist('tol', 'var')
     tol=1e-3;
 end
@@ -27,33 +30,42 @@ end
 OY = double(bsxfun(@eq, Y(:), unique(Y)'));
 OY = OY - mean(OY);
 c=size(OY,2);
-W=PCA(X,k);
+Q=vPCA(X,k);
 V=eye(k,c);
-XTX=X'*X;
+XXT=X*X'; tXXT=trace(XXT);
+XXT2=XXT*XXT;
+XXTY=XXT*OY;
+YYT = OY*OY'; tYYT=trace(YYT);
+Z0 = -XXT-alpha*tXXT/tYYT*YYT;
+D=1/2*diag((sum(Q.^2,2)+eps).^(-1/2));
+Z1 = Z0+beta*tXXT/trace(D)*D;
 maxObj=-inf;
 gamma=1;
 for t=1:T
     % update V
-    V=(W'*XTX*W+lambda*eye(k))\(W'*X'*OY);
+    V=(Q'*XXT2*Q+lambda*eye(k))\(Q'*XXTY);
+    VVT=V*V';
     maxObj0=maxObj;
-    maxObj=gamma*trace(W'*XTX*W)-gamma^2*(trace((X*W*V-OY)'*(X*W*V-OY))+lambda*trace(V*V'));
+    maxObj=gamma*trace(-Q'*Z1*Q)-gamma^2*(trace(Q'*XXT2*Q*VVT-2*Q'*XXTY*V'+lambda*VVT)+tYYT);
     if maxObj-maxObj0<tol
         break
-    end
+    end    
     % update gamma
-    gamma=trace(W'*XTX*W)/2/(trace((X*W*V-OY)'*(X*W*V-OY))+lambda*trace(V*V'));
-    % update W
+    gamma=trace(-Q'*Z1*Q)/2/(trace(Q'*XXT2*Q*VVT-2*Q'*XXTY*V'+lambda*VVT)+tYYT);
+    % update Q
     maxSum=0;
     for t2=1:10
-        M=2*XTX*W-2*gamma*XTX*W*(V*V')+2*gamma*X'*OY*V';
+        M=-2*Z1*Q-2*gamma*XXT2*Q*VVT+2*gamma*XXTY*V';
         [u,a,v] =  svd(M,'econ');
         maxSum0=maxSum;
         maxSum=sum(diag(a));
         if maxSum-maxSum0<tol
             break;
         end
-        W = u*v';
+        Q = u*v';
+        D=1/2*diag((sum(Q.^2,2)+eps).^(-1/2));
+        Z1 = Z0+beta*tXXT/trace(D)*D;
     end
 end
-O=W*V;
+O=X'*Q*V;
 end
