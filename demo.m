@@ -306,13 +306,13 @@ for s=1:length(datasets)
     tmpt=cellfun(@(u)squeeze(u(s,:,:)),BCAtune,'UniformOutput',false);
     tmpt=nanmean(cat(3,tmpt{:}),3);
     for i=ids
-        plot(tmpt(i,:),lineStyles{i},'linewidth',2);
+        plot(ks,tmpt(i,:),lineStyles{i},'linewidth',2);
     end
     set(gca,'yscale','log');
-    xlabel('Iteration'); ylabel('BCA'); box on; axis tight;
+    xlabel('Dimensionality'); ylabel('BCA'); box on; axis tight;
     title(datasetsName{s});
 end
-legend(LN(ids),'FontSize',12,'NumColumns',2);
+legend(LN(ids),'FontSize',12,'NumColumns',1,'Location','eastoutside');
 [tmp,ttmp]=deal(nan(length(datasets),length(LN),nRepeats));
 for s=1:length(datasets)
     ttmp0=cellfun(@(u)squeeze(u(s,ids)),times,'UniformOutput',false);
